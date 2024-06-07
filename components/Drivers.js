@@ -53,18 +53,18 @@ const Drivers = () => {
   };
 
   const renderItem = ({ item }) => (
-    <View key={item.id} style={[tw`flex-row justify-evenly p-4 mb-4 bg-gray-100 rounded-lg`, styles.driverContainer]}>
+  <View key={item.id} style={[tw`flex-row justify-evenly p-4 mb-4 bg-gray-100 rounded-lg`, styles.driverContainer]}>
       <Image source={item.image} style={styles.driverImage} />
-    <View style={tw`flex-row justify-between`}>
-      <View>
+     <View style={tw`flex-row justify-between`}>
+       <View>
         <Text style={tw`text-xl pl-5 font-bold mb-2`}>{item.name}</Text>
         <Text style={tw`text-lg pl-7 mr-5`}>Car: {item.car}</Text>
         <View style={tw`flex-row ml-5 items-center`}>
           <Ionicons name="star" size={20} color="gold" />
           <Text style={tw`text-lg ml-1`}>{item.rating}</Text>
         </View>
-      </View>
-      <View>
+       </View>
+     <View>
         <Text style={tw`text-lg pl-7`}>Price: {item.price}</Text>
         <View style={tw`flex-row mt-4`}>
           <TouchableOpacity 
@@ -81,7 +81,7 @@ const Drivers = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+      </View>
     </View>
   );
 
@@ -98,7 +98,7 @@ const Drivers = () => {
     </SafeAreaView>
   );
 };
-
+export default Drivers;
 const styles = StyleSheet.create({
   driverImage: {
     width: 60,
@@ -120,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Drivers;
+

@@ -2,8 +2,24 @@ import { Pressable, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, Vi
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, Icon, colors } from 'react-native-elements'
+import { useFocusEffect } from '@react-navigation/native'
 
 const SignupScreen = ({navigation}) => {
+  useFocusEffect(
+    React.useCallback(() => {
+      const backAction = () => {
+        // Disable back navigation
+        return true;
+      };
+
+      const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+        e.preventDefault();
+        backAction();
+      });
+
+      return unsubscribe;
+    }, [navigation])
+  );
   
 
   return (
