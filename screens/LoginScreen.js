@@ -8,7 +8,58 @@ import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
   const [isPasswordShown, setIsPasswordShown] = useState(false)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigation = useNavigation();
+
+  const handleSubmit = () => {
+
+    // window.sessionStorage.clear();
+    
+    if(email.length === 0 || password.length === 0) {
+        // openNotification("topRight", "error", "Login Error", "All fields are required");
+        console.log("Error")
+        return;
+    }
+
+    // setIsLoading(true);
+
+ const body = { email, password };
+
+  console.log('Email:', email);
+  console.log('Password:', password);
+
+
+  // axios
+  //   .post(`${process.env.REACT_APP_API_URL}/auth/sign-in`, body, { headers: {
+  //     'Content-Type': 'application/json'
+  //   },})
+  //   .then((response) => {
+  //   //   if (response.data.success) {
+
+  //       window.sessionStorage.setItem("token", response.data.accessToken);
+  //       window.sessionStorage.setItem("refreshToken", response.data.refreshToken);
+
+  //       // openNotification("topRight", "success", "Success", "Login Successful");
+  //       setEmail("");
+  //       setPassword("");
+  //       setIsLoading(false);
+
+  //       setTimeout(() => {
+  //         navigate(`/admin/dashboard`);
+  //       }, 1000);
+  //   //   }
+  //   })
+  //   .catch((error) => {
+  //     // openNotification("topRight", "error", "Login Error", "Invalid email address or password");
+  //     setEmail("");
+  //     setPassword("");
+
+  //     console.log("error :>> ", error);
+  //     setIsLoading(false);
+  //   });
+
+}
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.white}}>
@@ -41,9 +92,10 @@ const LoginScreen = () => {
             
           }}>
             <TextInput
-              placeholder='+233'
+              placeholder='Email'
               placeholderTextColor={colors.black}
-              keyboardType='numeric'
+              keyboardType='text'
+              
               style={{
                 width: "12%",
                 borderRightWidth: 1,
@@ -52,9 +104,10 @@ const LoginScreen = () => {
               }}
             />
             <TextInput
-              placeholder='Phone Number'
+              placeholder='Email Address'
               placeholderTextColor={colors.black}
-              keyboardType='numeric'
+              keyboardType='text'
+              onChangeText={(text) => setEmail(text)}
               style={{
                 width: "80%"
               }}
@@ -77,6 +130,7 @@ const LoginScreen = () => {
               placeholder='Password'
               placeholderTextColor={colors.black}
               secureTextEntry={isPasswordShown}
+              onChangeText={(text) => setPassword(text)}
               style={{
                 width: "100%"
               }}
@@ -102,7 +156,8 @@ const LoginScreen = () => {
 
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => navigation.navigate("HomeScreen")}
+          // onPress={() => navigation.navigate("HomeScreen")}
+          onPress={handleSubmit}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
