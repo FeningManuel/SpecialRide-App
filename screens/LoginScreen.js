@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, Icon, colors } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios'
+// import { REACT_APP_API_URL } from '@env';
 
 
 const LoginScreen = () => {
@@ -13,53 +15,54 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   const handleSubmit = () => {
-
-    // window.sessionStorage.clear();
-    
-    if(email.length === 0 || password.length === 0) {
-        // openNotification("topRight", "error", "Login Error", "All fields are required");
-        console.log("Error")
-        return;
+    if (email.length === 0 || password.length === 0) {
+      // openNotification("topRight", "error", "Login Error", "All fields are required");
+      console.log("Error: All fields are required");
+      return;
     }
-
-    // setIsLoading(true);
-
- const body = { email, password };
-
-  console.log('Email:', email);
-  console.log('Password:', password);
-
-
-  // axios
-  //   .post(`${process.env.REACT_APP_API_URL}/auth/sign-in`, body, { headers: {
-  //     'Content-Type': 'application/json'
-  //   },})
-  //   .then((response) => {
-  //   //   if (response.data.success) {
-
-  //       window.sessionStorage.setItem("token", response.data.accessToken);
-  //       window.sessionStorage.setItem("refreshToken", response.data.refreshToken);
-
-  //       // openNotification("topRight", "success", "Success", "Login Successful");
-  //       setEmail("");
-  //       setPassword("");
-  //       setIsLoading(false);
-
-  //       setTimeout(() => {
-  //         navigate(`/admin/dashboard`);
-  //       }, 1000);
-  //   //   }
-  //   })
-  //   .catch((error) => {
-  //     // openNotification("topRight", "error", "Login Error", "Invalid email address or password");
-  //     setEmail("");
-  //     setPassword("");
-
-  //     console.log("error :>> ", error);
-  //     setIsLoading(false);
-  //   });
-
-}
+  
+    const body = { email, password };
+  
+    console.log('Email:', email);
+    console.log('Password:', password);
+  
+    // Replace 'localhost' with your machine's local IP address
+    const API_URL = 'http://192.168.1.10:8000/auth/sign-in';
+  
+    axios
+      .post(API_URL, body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        console.log("Success");
+        setEmail("");
+        setPassword("");
+        setIsLoading(false);
+  
+        // setTimeout(() => {
+          navigation.navigate("HomeScreen");
+        // }, 1000);
+      })
+      .catch((error) => {
+        setEmail("");
+        setPassword("");
+  
+        if (error.response) {
+          console.log("Error Data:", error.response.data);
+          console.log("Error Status:", error.response.status);
+          console.log("Error Headers:", error.response.headers);
+        } else if (error.request) {
+          console.log("Error Request:", error.request);
+        } else {
+          console.log("Error Message:", error.message);
+        }
+        console.log("Error Config:", error.config);
+      });
+  };
+  
+  
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.white}}>
