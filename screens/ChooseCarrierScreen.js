@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Drivers from '../components/Drivers';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ChooseCarrier from '../components/ChooseCarrier';
 
 
 const Stack = createStackNavigator();
 
-const DriversScreen = () => {
+const ChooseCarrierScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Drivers" component={Drivers} />
+        <Stack.Screen name="ChooseCarrier" component={ChooseCarrier} />
       </Stack.Navigator>
     </SafeAreaView>
   );
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DriversScreen;
+export default ChooseCarrierScreen;

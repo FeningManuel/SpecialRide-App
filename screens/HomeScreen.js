@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -11,6 +11,8 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import tw from 'tailwind-react-native-classnames';
 import 'react-native-gesture-handler';
 import NavOptions from '../components/NavOptions';
+
+const { width, height } = Dimensions.get('window');
 
 const HomeScreen = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -68,7 +70,7 @@ const HomeScreen = () => {
             </Text>
           </View>
         </View>
-        <View style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', paddingVertical: 10 }}>
+        <View style={styles.centeredView}>
           <Text style={[styles.motto, { textAlign: 'center' }]}>We are delighted to have you on board;</Text>
         </View>
         <View style={styles.whereContainer}>
@@ -77,8 +79,8 @@ const HomeScreen = () => {
             styles={{
               container: {
                 flex: 0,
-                borderRadius: 10.382,
-                borderWidth: 1.038,
+                borderRadius: 10,
+                borderWidth: 1,
                 borderColor: '#262626',
                 paddingTop: 5,
               },
@@ -116,79 +118,71 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingTop: 30,
+    paddingTop: height * 0.03,
   },
   homeContainer: {
-    backgroundColor: '#fff',
     flex: 1,
-    width: '100%',
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
-    paddingLeft: '5%',
+    paddingLeft: width * 0.05,
   },
-  textContainer: {},
+  textContainer: {
+    flexDirection: 'row',
+  },
   textHeader: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   motto: {
-    textAlign: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: '300',
-    lineHeight: 26,
+    lineHeight: height * 0.03,
     color: '#262626',
-    width: 326,
-    height: 26,
+    width: width * 0.8,
+    textAlign: 'center',
   },
   blackText: {
     fontFamily: 'Ubuntu-BoldItalic',
-    fontSize: 37,
-    lineHeight: 'normal',
-    color: '#2626262',
-    textAlign: 'left',
-    letterSpacing: -1.837,
+    fontSize: width * 0.09,
+    color: '#262626',
+    letterSpacing: -1.8,
   },
   redText: {
-    fontSize: 37,
-    fontWeight: '700',
-    color: '#f25c5c',
     fontFamily: 'Ubuntu-BoldItalic',
+    fontSize: width * 0.09,
+    color: '#f25c5c',
     fontStyle: 'italic',
-    width: 83,
-    textAlign: 'left',
     letterSpacing: -1.8,
   },
   whereContainer: {
-    paddingLeft: '5%',
-    paddingRight: '5%',
-    paddingBottom: '40%',
-    backgroundColor: 'white',
+    paddingHorizontal: width * 0.05,
+    paddingBottom: height * 0.05,
   },
   advContainer: {
-    position: 'absolute',
-    bottom: 0,
-    marginLeft: 40,
-    marginBottom: 10,
-    width: '80%',
-    height: '20%',
+   
+    bottom: height * 0.025,
+    left: width * 0.1,
+    width: width * 0.8,
+    height: height * 0.15,
     borderRadius: 20,
     backgroundColor: '#d9d9d9',
     justifyContent: 'center',
     alignItems: 'center',
   },
   advText: {
-    justifyContent: 'center',
-    letterSpacing: -1.8,
-    textAlign: 'left',
-    alignItems: 'center',
-    fontSize: 30,
+    fontSize: width * 0.07,
     fontStyle: 'italic',
     fontWeight: '700',
+    textAlign: 'center',
+  },
+  centeredView: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
   },
 });

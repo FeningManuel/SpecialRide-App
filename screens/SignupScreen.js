@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, Icon, colors } from 'react-native-elements'
 import { useFocusEffect } from '@react-navigation/native'
 
+
 const SignupScreen = ({navigation}) => {
   useFocusEffect(
     React.useCallback(() => {

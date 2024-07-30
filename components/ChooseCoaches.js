@@ -4,42 +4,42 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-const drivers = [
+const Carriers = [
   {
     id: '1',
-    name: 'John Doe',
+    name: 'Samuel Mensah',
     rating: 4.5,
-    car: 'Toyota Vitz',
+    car: 'Kia',
     price: '₵25/hr',
     image: require('../assets/DriverImage.png'),
   },
   {
     id: '2',
-    name: 'Jane Smith',
+    name: 'Emmanuel Khan',
     rating: 4.7,
-    car: 'Toyota Vitz',
+    car: 'Kia',
     price: '₵30/hr',
     image: require('../assets/DriverImage.png'),
   },
   {
     id: '3',
-    name: 'Jane Smith',
+    name: 'James Moore',
     rating: 4.7,
-    car: 'Toyota Vitz',
+    car: 'Kia',
     price: '₵30/hr',
     image: require('../assets/DriverImage.png'),
   },
   {
     id: '4',
-    name: 'Jane Smith',
+    name: 'Peter Smith',
     rating: 4.7,
-    car: 'Toyota Vitz',
+    car: 'Kia',
     price: '₵30/hr',
     image: require('../assets/DriverImage.png'),
   },
 ];
 
-const Drivers = () => {
+const ChooseCarrier = () => {
   const navigation = useNavigation();
   const [selected, setSelected] = useState(null);
 
@@ -48,7 +48,7 @@ const Drivers = () => {
   };
 
   const handleDecline = (id) => {
-    navigation.navigate('RidesScreen');
+    navigation.navigate('CarriersScreen');
   };
 
   const renderItem = ({ item }) => (
@@ -57,7 +57,7 @@ const Drivers = () => {
       <View style={styles.driverDetails}>
         <Text style={styles.driverName}>{item.name}</Text>
         <View style={styles.carAndPriceContainer}>
-          <Text style={styles.driverCar}>Car: {item.car}</Text>
+          <Text style={styles.driverCar}>Truck: {item.car}</Text>
           <Text style={styles.driverPrice}>Price: {item.price}</Text>
         </View>
         <View style={styles.ratingContainer}>
@@ -85,10 +85,10 @@ const Drivers = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Text style={styles.title}>
-        {selected ? `Drivers for ${selected.title}` : 'Select a driver'}
+        {selected ? `Carriers for ${selected.title}` : 'Select a Carrier'}
       </Text>
       <FlatList 
-        data={drivers}
+        data={Carriers}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
       />
@@ -96,8 +96,7 @@ const Drivers = () => {
   );
 };
 
-export default Drivers;
-
+export default ChooseCarrier
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

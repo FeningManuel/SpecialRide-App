@@ -1,6 +1,5 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
-import React from 'react'
-import { Icon } from 'react-native-elements';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image, Dimensions } from 'react-native';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 const data = [
@@ -34,58 +33,58 @@ const NavOptions = () => {
     const navigation = useNavigation();
 
     const handleItemPress = (screenName) => {
-      navigation.navigate(screenName);
-  };
+        navigation.navigate(screenName);
+    };
 
-  return (
-    <FlatList 
-      data={data}
-      numColumns={2}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <View style={styles.container}>
-            <Text style={styles.title}>{item.title}</Text>
-        <TouchableOpacity 
-        onPress={() => handleItemPress(item.screen)}
-        style={styles.itemContainer}>
-            <View>
-                <Image source={item.Image}
-                  style={{ width: 180, height: 100, resizeMode: 'cover'
-                  
-                  }}
-                />
-                
-                
-            </View>    
-        </TouchableOpacity>
-        </View>
-      )}/>
-  )
-}
+    const { width } = Dimensions.get('window');
+    const itemSize = width * 0.4; // 40% of the screen width
+    const imageHeight = itemSize * 0.55; // 55% of the item size
 
-export default NavOptions
+    return (
+        <FlatList 
+            data={data}
+            numColumns={2}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+                <View style={styles.container}>
+                  <Text style={styles.title}>{item.title}</Text>
+                    <TouchableOpacity 
+                        onPress={() => handleItemPress(item.screen)}
+                        style={[styles.itemContainer, { width: itemSize, height: itemSize }]}>
+                        <Image source={item.Image} style={[styles.image, { height: imageHeight }]} />
+                        
+                    </TouchableOpacity>
+                </View>
+            )}
+        />
+    );
+};
+
+export default NavOptions;
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 5,
-        marginTop: 20,
-        
-      },
-      title: {
-
-        marginLeft: 20,
+        flex: 1,
+        margin: 5,
+        alignItems: 'center',
+    },
+    title: {
         fontSize: 18,
-        fontWeight: "bold"
-      },
-      itemContainer: {
-    
-        paddingLeft: 10,
-        backgroundColor: "#d9d9d9",
-        margin: 15,
-        width: 150,
-        height: 150,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 0,
+        paddingTop: 4
+    },
+    itemContainer: {
+        backgroundColor: '#d9d9d9',
+        margin: 5,
         borderRadius: 10,
-        alignItems: "center",
-        justifyContent: "center"
-      },
-})
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+    },
+    image: {
+        width: '100%',
+        resizeMode: 'contain',
+    },
+});

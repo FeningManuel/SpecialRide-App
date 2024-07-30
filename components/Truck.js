@@ -1,145 +1,306 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, TextInput, View, Image } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import tw from 'tailwind-react-native-classnames'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-import { Icon } from 'react-native-elements'
-import { useNavigation } from '@react-navigation/native'
-import { colors } from 'react-native-elements'
+import React, { useState, useRef } from 'react';
+import { StyleSheet, Text, TextInput, View, Dimensions, Image, FlatList, TouchableOpacity, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const data = [
   {
     id: "123",
-    title: "Tipper Truck",
+    title: "Water Tanker",
     multiplier: 1,
-    Image: require('../assets/Truck.png')
+    Image: require('../assets/Water Tanker.png')
   },
   {
     id: "456",
-    title: "Water Tanker",
+    title: "Truck",
     multiplier: 1.2,
-    Image: require('../assets/Water Tanker.png')
-  }, 
- 
-]
+    Image: require('../assets/Truck.png')
+  },
+  
+];
 
 const Truck = () => {
   const navigation = useNavigation();
   const [selected, setSelected] = useState(null);
+  const [price, setPrice] = useState('');
+  const [comment, setComment] = useState('');
+  const priceInputRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
 
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
 
   return (
-    <SafeAreaView style={tw`bg-white flex-grow`}>
-        <Text style={tw`font-bold text-center text-2xl`}>Get a Truck</Text>
-        <TouchableOpacity 
-        onPress={() => navigation.navigate("HomeScreen")}
-        style={tw`absolute top-3 left-1 z-50 p-3 rounded-full`}>
-        <Icon name="chevron-left" type="font-awesome" />
-        </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <View style={styles.safeArea}>
+        <Text style={styles.title}>Get a Truck</Text>
 
-        <View style={tw`border-t border-gray-200 flex-shrink`}>
-        <View>
-            <GooglePlacesAutocomplete 
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            <Ionicons name="location-outline" size={wp('6%')} color="black" style={styles.icon} />
+            <GooglePlacesAutocomplete
               placeholder='Pick-up Location'
-              styles={toInputBoxStyles}
               fetchDetails={true}
               returnKeyType={"search"}
               minLength={2}
               onPress={(data, details = null) => {
-                dispatch(
-                  setDestination({
-                    location: details.geometry.location,
-                    decription: data.description,
-                  })
-                );
-
-                navigation.navigate("RideOptionsCard");
-
+                // Handle location selection
               }}
               enablePoweredByContainer={false}
               nearbyPlacesAPI='GooglePlacesSearch'
               debounce={400}
+              styles={{
+                container: {
+                  flex: 0,
+                  borderRadius: wp('2%'),
+                  paddingTop: hp('0.5%'),
+                  width: '100%',
+                },
+                textInput: {
+                  fontSize: wp('4%'),
+                },
+              }}
             />
-        </View>
-        
-            <View style={tw`border-t border-gray-200 flex-shrink`}>
+          </View>
 
-<View>
-    <GooglePlacesAutocomplete 
-      placeholder='Delivery Address'
-      styles={toInputBoxStyles}
-      fetchDetails={true}
-      returnKeyType={"search"}
-      minLength={2}
-      onPress={(data, details = null) => {
-        dispatch(
-          setDestination({
-            location: details.geometry.location,
-            decription: data.description,
-          })
-        );
-
-        
-
-      }}
-      enablePoweredByContainer={false}
-      nearbyPlacesAPI='GooglePlacesSearch'
-      debounce={400}
-    />
-</View>
-</View>
-    
-      </View>
-      <FlatList 
-        data={data}
-        horizontal
-        keyExtractor={(item) => item.id}
-        renderItem={({ item: { id, title, multiplier, image }, item }) => (
-         <TouchableOpacity 
-         onPress={() => setSelected(item)}
-         style={tw`bg-gray-100 m-2 h-12 p-3 items-center `}>
-           <Image source={item.Image}
-             style={{
-             width:90,
-             height:50,
-             resizeMode: "contain",
-             }}
-            />
-            <View style={tw`-ml-6`}>
-              <Text style={tw``}>{title}</Text>
-             
-            </View>
+          <View style={styles.inputContainer}>
+            <Ionicons name="location-outline" size={wp('6%')} color="black" style={styles.icon} />
+            <GooglePlacesAutocomplete
+              placeholder='Destination'
+              fetchDetails={true}
+              returnKeyType={"search"}
+              minLength={2}
+              onPress={(data, details = null) => {
+                // Handle destination selection
+                navigation.navigate("RideOptionsCard");
+              }}
+              enablePoweredByContainer={false}
+              nearbyPlacesAPI='GooglePlacesSearch'
+              debounce={400}
+              styles={{
+                container: {
+                  flex: 0,
+                  borderRadius: wp('2%'),
             
-         </TouchableOpacity>
-        )}
-      />
+                  paddingTop: hp('0.5%'),
+                  width: '100%',
+                },
+                textInput: {
+                  fontSize: wp('4%'),
+                },
+              }}
+            />
+          </View>
+        </View>
 
-      <View>
-        <TouchableOpacity 
-          disabled={!selected} 
+        <View>
+          <FlatList
+            data={data}
+            horizontal
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => setSelected(item)}
+                style={[
+                  styles.truckOption,
+                  selected?.id === item.id && styles.selectedTruckOption
+                ]}
+              >
+                <Image
+                  source={item.Image}
+                  style={styles.truckImage}
+                  resizeMode="contain"
+                />
+                <Text style={styles.truckTitle}>{item.title}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+
+        <View style={styles.priceCommentContainer}>
+          <View style={styles.setPrice}>
+            <TouchableOpacity style={styles.priceButton}>
+              <Ionicons name="cash-outline" size={wp('6%')} color="black" />
+              <Text style={styles.priceButtonText}>GHS</Text>
+            </TouchableOpacity>
+            <TextInput
+              ref={priceInputRef}
+              style={styles.priceInput}
+              placeholder="Set price"
+              value={price}
+              onChangeText={setPrice}
+              keyboardType="numeric"
+            />
+          </View>
+
+          <TouchableOpacity onPress={() => setShowModal(true)} style={{ flex: 1 }}>
+            <TextInput
+              style={styles.commentInput}
+              placeholder="Comment"
+              value={comment}
+              onChangeText={setComment}
+              multiline
+            />
+          </TouchableOpacity>
+        </View>
+
+        <Modal visible={showModal} animationType="slide">
+          <View style={styles.modalContainer}>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Comment"
+              value={comment}
+              onChangeText={setComment}
+              multiline={true}
+              numberOfLines={5}
+            />
+            <TouchableOpacity onPress={() => setShowModal(false)}>
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
+        <TouchableOpacity
+          disabled={!selected}
           onPress={() => selected && navigation.navigate('DriversScreen')}
-          style={tw`bg-black py-3 ${!selected && "bg-gray-300"}`}>
-          <Text style={tw`text-center text-white text-xl`}>Choose {selected?.title}</Text>
+          style={[
+            styles.chooseButton,
+            !selected && styles.disabledButton
+          ]}
+        >
+          <Text style={styles.chooseButtonText}>Select {selected?.title}</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
-  )
-}
-export default Truck
+    </TouchableWithoutFeedback>
+  );
+};
 
-const toInputBoxStyles = StyleSheet.create({
+export default Truck;
+
+const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: 'white',
+    padding: wp('2%'),
+  },
+  title: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: wp('6%'), // Adjusted font size using width percentage
+    paddingVertical: hp('1%'), // Reduced padding
+  },
   container: {
-      backgroundColor: "white",
-      paddingTop: 20,
-      flex: 0,
+    marginBottom: hp('1%'),
   },
-  textInput: {
-      backgroundColor: "#DDDDDF",
-      borderRadius: 0,
-      fontSize: 18,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: hp('0.5%'),
+    backgroundColor: '#f0f0f0',
+    borderRadius: wp('2%'),
+    paddingHorizontal: wp('3%'), // Reduced padding
+    paddingVertical: hp('1%'), // Reduced padding
+    width: '100%',
   },
-  textInputContainer: {
-      paddingHorizontal: 20,
-      paddingBottom: 0,
+  icon: {
+    marginRight: wp('1%'),
+  },
+  truckOption: {
+    backgroundColor: '#e0e0e0',
+    alignItems: 'center',
+    borderRadius: wp('2%'),
+    width: wp('30%'),
+    marginLeft: wp('1.5%'),
+    height: wp('22%'),
+    justifyContent: 'center',
+  },
+  selectedTruckOption: {
+    backgroundColor: "#ffcccc",
+  },
+  truckImage: {
+    width: wp('15%'),
+    height: wp('15%'),
+  },
+  truckTitle: {
+    textAlign: 'center',
+    marginTop: hp('0.5%'),
+    fontSize: wp('4%'),
+    fontWeight: "450",
+  },
+  chooseButton: {
+    backgroundColor: '#ff5c5c',
+    borderRadius: wp('2%'),
+    paddingVertical: hp('2%'), // Adjusted padding for vertical space
+    alignItems: 'center',
+    marginHorizontal: wp('3%'), // Margin added to horizontally center the button
+    marginBottom: hp('2%'), // Small margin below the button
+  },
+  disabledButton: {
+    backgroundColor: '#e0e0e0',
+  },
+  chooseButtonText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: wp('4%'),
+  },
+  priceCommentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: hp('2%'),
+    marginTop: hp('2%'), // Reduced margin
+  },
+  setPrice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: wp('2%'),
+    paddingHorizontal: wp('3%'), // Reduced padding
+    paddingVertical: hp('1%'), // Reduced padding
+    marginRight: wp('1%'),
+  },
+  priceButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: wp('2%'),
+  },
+  priceButtonText: {
+    fontSize: wp('4%'),
+    color: 'black',
+    marginLeft: wp('1%'),
+  },
+  priceInput: {
+    borderRadius: wp('2%'),
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('1%'),
+    fontSize: wp('4%'),
+    backgroundColor: 'white',
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
+  commentInput: {
+    backgroundColor: 'white',
+    borderRadius: wp('2%'),
+    paddingHorizontal: wp('4%'),
+    paddingVertical: hp('1%'),
+    fontSize: wp('4%'),
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    padding: wp('4%'),
+    borderRadius: wp('2%'),
+    justifyContent: 'center',
+  },
+  modalInput: {
+    fontSize: wp('4%'),
+    paddingVertical: hp('1%'),
+    paddingHorizontal: wp('3%'),
+    backgroundColor: '#fff',
+    borderRadius: wp('2%'),
+    borderWidth: 1,
+    borderColor: '#ddd',
   },
 });

@@ -1,43 +1,44 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import tw from 'tailwind-react-native-classnames'
-import Map from '../components/Map'
-import { createStackNavigator } from '@react-navigation/stack'
-import { Ionicons } from '@expo/vector-icons'
-import Rides from '../components/Rides'
-
-
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import Map from '../components/Map';
+import { createStackNavigator } from '@react-navigation/stack';
+import Rides from '../components/Rides';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const RidesScreen = () => {
+  const Stack = createStackNavigator();
 
-    const Stack = createStackNavigator();
   return (
-    
-    <View>
-      <View style={tw`h-1/2`}>
+    <View style={styles.container}>
+      <View style={styles.mapContainer}>
         <Map />
-        <View style={tw`flex-row justify-between items-center p-4 bg-gray-100`}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Ionicons name="menu" size={32} color="black" />
-        </TouchableOpacity>
-      </View>
       </View>
 
-      <View style={tw`h-1/2`}>
+      <View style={styles.ridesContainer}>
         <Stack.Navigator>
-        <Stack.Screen
-           name="Rides"
-           component={Rides}
-           options={{
-            headerShown: false,
-           }}
-         />
-         </Stack.Navigator>
+          <Stack.Screen
+            name="Rides"
+            component={Rides}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </View>
     </View>
-    </View>
-  )
-}
+  );
+};
 
-export default RidesScreen
+export default RidesScreen;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  mapContainer: {
+    height: hp('40%'), // Replaced fixed height with responsive height
+  },
+  ridesContainer: {
+    height: hp('60%'), // Replaced fixed height with responsive height
+  },
+});

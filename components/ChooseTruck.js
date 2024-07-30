@@ -4,42 +4,42 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-const drivers = [
+const Truck = [
   {
     id: '1',
-    name: 'John Doe',
+    name: 'Justice Sefa',
     rating: 4.5,
-    car: 'Toyota Vitz',
+    car: 'Truck',
     price: '₵25/hr',
     image: require('../assets/DriverImage.png'),
   },
   {
     id: '2',
-    name: 'Jane Smith',
+    name: 'Emmanuel Osei',
     rating: 4.7,
-    car: 'Toyota Vitz',
+    car: 'Truck',
     price: '₵30/hr',
     image: require('../assets/DriverImage.png'),
   },
   {
     id: '3',
-    name: 'Jane Smith',
+    name: 'Alfred Mensah',
     rating: 4.7,
-    car: 'Toyota Vitz',
+    car: 'Truck',
     price: '₵30/hr',
     image: require('../assets/DriverImage.png'),
   },
   {
     id: '4',
-    name: 'Jane Smith',
+    name: 'Issac Frimpong',
     rating: 4.7,
-    car: 'Toyota Vitz',
+    car: 'Truck',
     price: '₵30/hr',
     image: require('../assets/DriverImage.png'),
   },
 ];
 
-const Drivers = () => {
+const ChooseTruck = () => {
   const navigation = useNavigation();
   const [selected, setSelected] = useState(null);
 
@@ -48,7 +48,7 @@ const Drivers = () => {
   };
 
   const handleDecline = (id) => {
-    navigation.navigate('RidesScreen');
+    navigation.navigate('TruckScreen');
   };
 
   const renderItem = ({ item }) => (
@@ -57,7 +57,7 @@ const Drivers = () => {
       <View style={styles.driverDetails}>
         <Text style={styles.driverName}>{item.name}</Text>
         <View style={styles.carAndPriceContainer}>
-          <Text style={styles.driverCar}>Car: {item.car}</Text>
+          <Text style={styles.driverCar}>Truck: {item.car}</Text>
           <Text style={styles.driverPrice}>Price: {item.price}</Text>
         </View>
         <View style={styles.ratingContainer}>
@@ -69,7 +69,7 @@ const Drivers = () => {
             style={[styles.button, styles.acceptButton]} 
             onPress={() => handleAccept(item.id)}
           >
-            <Text style={styles.buttonText}>Accept</Text>
+            <Text style={styles.buttonText}>Acce</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.button, styles.declineButton]} 
@@ -85,10 +85,10 @@ const Drivers = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Text style={styles.title}>
-        {selected ? `Drivers for ${selected.title}` : 'Select a driver'}
+        {selected ? `Truck for ${selected.title}` : 'Select a Truck'}
       </Text>
       <FlatList 
-        data={drivers}
+        data={Truck}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
       />
@@ -96,8 +96,7 @@ const Drivers = () => {
   );
 };
 
-export default Drivers;
-
+export default ChooseTruck
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

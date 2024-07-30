@@ -26,7 +26,7 @@ const Confirmation = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       
         <View>
         <View style={styles.card}>
@@ -108,7 +108,7 @@ const Confirmation = () => {
 
       </View>
    
-  </SafeAreaView>
+  </View>
 )};
 export default Confirmation;
 

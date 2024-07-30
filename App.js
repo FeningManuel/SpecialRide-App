@@ -27,9 +27,27 @@ import ConfirmationScreen from './screens/ConfirmationScreen';
 import DriverArrivedScreen from './screens/DriverArrivedScreen';
 import { Ionicons } from '@expo/vector-icons'
 import CustomDrawerContent from './components/CustomDrawerContent';
+import ChooseCarrierScreen from './screens/ChooseCarrierScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import PersonalInfoScreen from './screens/PersonalInfoScreen';
+import PaymentMethodScreen from './screens/PaymentMethodScreen';
+import SecurityScreen from './screens/SecurityScreen';
+import SavedPlacesScreen from './screens/SavedPlacesScreen';
+import GiftandDiscountScreen from './screens/GiftandDiscountScreen';
+import DeleteScreen from './screens/DeleteScreen';
+import ChangePasswordScreen from './screens/ChangePasswordScreen';
+import IdentityVerificationScreen from './screens/IdentityVerificationScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen';
+import TermsOfServiceScreen from './screens/TermsOfServiceScreen';
+import HelpSupportScreen from './screens/HelpSupportScreen';
+import LanguageScreen from './screens/LanguageScreen';
+import AboutScreen from './screens/AboutScreen';
+import ContactUsScreen from './screens/ContactUsScreen';
 
-const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
 
 const DrawerNavigator = () => (
   <Drawer.Navigator
@@ -41,6 +59,7 @@ const DrawerNavigator = () => (
     }}
     drawerContent={(props) => <CustomDrawerContent {...props} />} // Use the custom drawer content
   >
+    
     <Drawer.Screen
       name="Home"
       options={{
@@ -53,6 +72,19 @@ const DrawerNavigator = () => (
         ),
       }}
       component={HomeScreen}
+    />
+    <Drawer.Screen
+      name="Profile"
+      options={{
+        headerShown: false,
+        drawerLabel: 'Profile',
+        title: 'Profile',
+        drawerIcon: () => (
+        
+          <SimpleLineIcons name="user" size={24} color="#808080" />
+        ),
+      }}
+      component={ProfileScreen}
     />
     <Drawer.Screen
       name="Category"
@@ -167,6 +199,13 @@ export default function App() {
                 }}
               />
               <Stack.Screen
+                name="ForgotPasswordScreen"
+                component={ForgotPasswordScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
                 name="MapScreen"
                 component={MapScreen}
                 options={{
@@ -209,6 +248,13 @@ export default function App() {
                 }}
                 />
               <Stack.Screen
+                name="ChooseCarrierScreen"
+                component={ChooseCarrierScreen}
+                options={{
+                  headerShown: false,
+                }}
+                />
+              <Stack.Screen
                 name="ConfirmationScreen"
                 component={ConfirmationScreen}
                 options={{
@@ -218,6 +264,104 @@ export default function App() {
               <Stack.Screen
                 name="DriverArrivedScreen"
                 component={DriverArrivedScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="PersonalInfoScreen"
+                component={PersonalInfoScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="PaymentMethodScreen"
+                component={PaymentMethodScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="SavedPlacesScreen"
+                component={SavedPlacesScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="SecurityScreen"
+                component={SecurityScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="GiftandDiscountScreen"
+                component={GiftandDiscountScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="DeleteScreen"
+                component={DeleteScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ChangePasswordScreen"
+                component={ChangePasswordScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="IdentityVerificationScreen"
+                component={IdentityVerificationScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="PrivacyPolicyScreen"
+                component={PrivacyPolicyScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="TermsOfServiceScreen"
+                component={TermsOfServiceScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="HelpSupportScreen"
+                component={HelpSupportScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="LanguageScreen"
+                component={LanguageScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="AboutScreen"
+                component={AboutScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="ContactUsScreen"
+                component={ContactUsScreen}
                 options={{
                   headerShown: false,
                 }}
