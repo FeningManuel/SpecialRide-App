@@ -1,10 +1,34 @@
-import { Pressable, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, Icon, colors } from 'react-native-elements'
 import { useFocusEffect } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons'
+import axios from 'axios'
+import LoginScreen from './LoginScreen'
+import { useNavigation } from '@react-navigation/native';
+// import { notification } from 'antd';
 
-const SignupScreen = ({navigation}) => {
+const SignupScreen = () => {
+  const [isPasswordShown, setIsPasswordShown] = useState(false)
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [role, setRole] = useState("super-admin");
+  const navigation = useNavigation();
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       const backAction = () => {
@@ -21,6 +45,51 @@ const SignupScreen = ({navigation}) => {
     }, [navigation])
   );
   
+  const handleSubmit = () => {
+  
+    const body = { role, firstName, lastName, email, password, phoneNumber };
+    console.log(body)
+  
+    const API_URL = 'http://54.160.124.158:3000/auth/sign-up';
+  
+    axios
+      .post(API_URL, body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        console.log("Success");
+  
+        // openNotification(
+        //   "topRight",
+        //   "success",
+        //   "Success",
+        //   "Registration successful"
+        // );
+        // notification.success({
+        //   message: "Success",
+        //   description: "Registration successful",
+        //   placement: "topRight",
+        // });
+        // setTimeout(() => {
+          navigation.navigate("LoginScreen");
+        // }, 1000);
+      })
+      .catch((error) => {
+  
+        if (error.response) {
+          console.log("Error Data:", error.response.data);
+          console.log("Error Status:", error.response.status);
+          console.log("Error Headers:", error.response.headers);
+        } else if (error.request) {
+          console.log("Error Request:", error.request);
+        } else {
+          console.log("Error Message:", error.message);
+        }
+        console.log("Error Config:", error.config);
+      });
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.white}}>
@@ -50,7 +119,7 @@ const SignupScreen = ({navigation}) => {
           <Text style={{
               fontSize: 16,
               color: colors.black,
-          }}> Create an account as passenger, </Text>
+          }}> Create an account, </Text>
         </View>
 
         <View style={{paddingTop: 30, marginBottom: 12}}>
@@ -66,8 +135,10 @@ const SignupScreen = ({navigation}) => {
           }}>
             <TextInput
               placeholder='First name'
+           
               placeholderTextColor={colors.black}
               keyboardType='name-phone-pad'
+              onChangeText={(text) => setFirstName(text)}
               style={{
                 width: "100%"
               }}
@@ -88,6 +159,8 @@ const SignupScreen = ({navigation}) => {
           }}>
             <TextInput
               placeholder='Last name'
+             
+              onChangeText={(text) => setLastName(text)}
               placeholderTextColor={colors.black}
               keyboardType='name-phone-pad'
               style={{
@@ -110,6 +183,8 @@ const SignupScreen = ({navigation}) => {
           }}>
             <TextInput
               placeholder='Email address'
+              name='email'
+              onChangeText={(text) => setEmail(text)}
               placeholderTextColor={colors.black}
               keyboardType='email-address'
               style={{
@@ -119,7 +194,48 @@ const SignupScreen = ({navigation}) => {
 
           </View>
         </View>
+
         <View style={{paddingTop: 12, marginBottom: 12}}>
+          <View style={{
+            width: "100%",
+            height: 48,
+            borderColor: colors.black,
+            borderWidth: 1,
+            borderRadius: 8,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingLeft: 22
+          }}>
+            <TextInput
+              placeholder='Password'
+              placeholderTextColor={colors.black}
+              secureTextEntry={isPasswordShown}
+              name='password'
+              onChangeText={(text) => setPassword(text)}
+              style={{
+                width: "100%"
+              }}
+            />
+
+            <TouchableOpacity 
+            onPress={() => setIsPasswordShown(!isPasswordShown)}
+            style={{
+              position: "absolute",
+              right: 12
+            }}>
+              {
+                isPasswordShown == true ? (
+                  <Ionicons name="eye-off" size={24} color={colors.black} />
+                ) : (
+                  <Ionicons name="eye" size={24} color={colors.black} />
+                )
+              }
+
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* <View style={{paddingTop: 12, marginBottom: 12}}>
           <View style={{
             width: "100%",
             height: 48,
@@ -140,7 +256,7 @@ const SignupScreen = ({navigation}) => {
             />
 
           </View>
-        </View>
+        </View> */}
 
         <View style={{paddingTop: 12, marginBottom: 12}}>
           <View style={{
@@ -168,6 +284,8 @@ const SignupScreen = ({navigation}) => {
             />
             <TextInput
               placeholder='Phone Number'
+              name='phoneNumber'
+              onChangeText={(text) => setPhoneNumber(text)}
               placeholderTextColor={colors.black}
               keyboardType='numeric'
               style={{
@@ -183,7 +301,8 @@ const SignupScreen = ({navigation}) => {
 
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => navigation.navigate("HomeScreen")}
+          // onPress={() => navigation.navigate("HomeScreen")}
+          onPress={handleSubmit}
         >
           <Text style={styles.buttonText}>Create an account</Text>
         </TouchableOpacity>

@@ -11,21 +11,51 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import tw from 'tailwind-react-native-classnames';
 import 'react-native-gesture-handler';
 import NavOptions from '../components/NavOptions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const navigation = useNavigation();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     const loadFonts = async () => {
-      await Font.loadAsync({
-        Ubuntu: require('../assets/fonts/Ubuntu-BoldItalic.ttf'),
-      });
+      // await Font.loadAsync({
+      //   Ubuntu: require('../assets/fonts/Ubuntu-BoldItalic.ttf'),
+      // });
       setFontsLoaded(true);
     };
 
     loadFonts();
+  }, []);
+
+  useEffect(async () => {
+
+    const token = await AsyncStorage.getItem("token");
+
+    if (!token) {
+      navigation.navigate("LoginScreen");
+      return;
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    axios
+      .get(`http://54.160.124.158:3000/categories`, { headers })
+      .then((response) => {
+        // console.log(response.data.data);
+        setCategories(response.data.data);
+        console.log(`Categories: ${categories}`)
+        // setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        // setIsLoading(false);
+      });
   }, []);
 
   useFocusEffect(
@@ -149,7 +179,7 @@ const styles = StyleSheet.create({
   blackText: {
     fontFamily: 'Ubuntu-BoldItalic',
     fontSize: 37,
-    lineHeight: 'normal',
+    lineHeight: 26,
     color: '#2626262',
     textAlign: 'left',
     letterSpacing: -1.837,
@@ -175,6 +205,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginLeft: 40,
     marginBottom: 10,
+    marginTop: 20,
     width: '80%',
     height: '20%',
     borderRadius: 20,

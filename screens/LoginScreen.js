@@ -1,10 +1,14 @@
-import { StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, Icon, colors } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import openNotification from '../components/OpenNotification'
+
+
 // import { REACT_APP_API_URL } from '@env';
 
 
@@ -26,8 +30,7 @@ const LoginScreen = () => {
     console.log('Email:', email);
     console.log('Password:', password);
   
-    // Replace 'localhost' with your machine's local IP address
-    const API_URL = 'http://192.168.1.10:8000/auth/sign-in';
+    const API_URL = 'http://54.160.124.158:3000/auth/sign-in';
   
     axios
       .post(API_URL, body, {
@@ -35,17 +38,19 @@ const LoginScreen = () => {
           'Content-Type': 'application/json',
         },
       })
-      .then(() => {
+      .then(async (response) => {
         console.log("Success");
-        setEmail("");
-        setPassword("");
-        setIsLoading(false);
+        // console.log(response.data)
+        await AsyncStorage.setItem("token", response.data.accessToken);
+        Alert.alert('Success', 'Login Successful');
   
         // setTimeout(() => {
           navigation.navigate("HomeScreen");
         // }, 1000);
       })
       .catch((error) => {
+        // openNotification("topRight", "error", "Login Error", "Incorrect email or password");
+        Alert.alert('Error', 'Incorrect email or password');
         setEmail("");
         setPassword("");
   
