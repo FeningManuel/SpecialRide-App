@@ -1,13 +1,34 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Icon, colors } from 'react-native-elements';
+import { colors } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const LoginScreen = () => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
+  const [phoneCode, setPhoneCode] = useState('+233');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
   const navigation = useNavigation();
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('https://your-api-endpoint.com/login', {
+        phone: `${phoneCode}${phoneNumber}`,
+        password,
+      });
+
+      if (response.status === 200) {
+        navigation.navigate('HomeScreen');
+      } else {
+        console.error('Login failed:', response.data);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
@@ -22,12 +43,16 @@ const LoginScreen = () => {
               placeholderTextColor={colors.black}
               keyboardType='numeric'
               style={styles.countryCodeInput}
+              value={phoneCode}
+              onChangeText={setPhoneCode}
             />
             <TextInput
               placeholder='Phone Number'
               placeholderTextColor={colors.black}
               keyboardType='numeric'
               style={styles.phoneNumberInput}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
             />
           </View>
         </View>
@@ -38,6 +63,8 @@ const LoginScreen = () => {
               placeholderTextColor={colors.black}
               secureTextEntry={!isPasswordShown}
               style={styles.passwordInput}
+              value={password}
+              onChangeText={setPassword}
             />
             <TouchableOpacity
               onPress={() => setIsPasswordShown(!isPasswordShown)}
@@ -61,7 +88,7 @@ const LoginScreen = () => {
 
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => navigation.navigate("HomeScreen")}
+          onPress={handleLogin}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
@@ -78,9 +105,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 12,
     color: colors.black,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft: 75,
+    textAlign: 'center',
   },
   inputContainer: {
     width: '100%',
@@ -96,7 +121,7 @@ const styles = StyleSheet.create({
   countryCodeInput: {
     width: '12%',
     borderRightWidth: 1,
-    borderLeftColor: colors.grey1,
+    borderRightColor: colors.grey1,
     height: '100%',
   },
   phoneNumberInput: {
